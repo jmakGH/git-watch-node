@@ -33,7 +33,7 @@ const { argv } = yargs
   .help('h')
   .alias('h', 'help');
 
-log.info('Starting up node-git-watch');
+log.info('Starting up git-node-watch');
 
 if (!fs.existsSync('.git')) {
   log.error(`Error: Git doesn't seem to be initialized here ${process.cwd()}`);
