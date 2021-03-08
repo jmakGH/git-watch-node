@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "bin": {
-    "node-git-watch": "./dist/index.js"
+    "git-watch-node": "./dist/index.js"
   },
   "scripts": {
     "build": "tsc",

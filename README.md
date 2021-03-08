@@ -1,4 +1,4 @@
-# node-git-watch
+# git-watch-node
 
 This is a CLI tool that watches for changes in a repo to automatically commit and push up to your git remote repository.
 
@@ -6,7 +6,7 @@ This is a CLI tool that watches for changes in a repo to automatically commit an
 
 You can clone this repo and run `npm link` inside of the repo.
 
-From there, you can call `node-git-watch` from the repo you wish to watch, using the following argument options to tailor the script.
+From there, you can call `git-watch-node` from the repo you wish to watch, using the following argument options to tailor the script.
 
 ## Arguments
 
