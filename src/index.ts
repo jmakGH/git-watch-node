@@ -17,7 +17,7 @@ const DEFAULT_INTERVAL_MS = 600000;
 const DEFAULT_DATE_FORMAT = 'y-MM-dd HH:mm:ss';
 
 const { argv } = yargs
-  .scriptName('node-git-watch')
+  .scriptName('git-watch-node')
   .option('t', {
     alias: 'timer',
     describe: 'Interval in milliseconds between commits',
