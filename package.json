@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "keywords": [
+    "git",
+    "node",
+    "watch"
+  ],
   "bin": {
     "git-watch-node": "./dist/index.js"
   },
