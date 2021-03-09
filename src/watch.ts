@@ -4,35 +4,57 @@ import log from './log';
 
 let timer: NodeJS.Timeout;
 
-export default function watch(interval: number, dateFormat: string) {
-  return setTimeout(async () => {
-    try {
-      const hasChanges = await hasNewOrChangedFiles();
+function handleExit(callback?: () => void) {
+  clearTimeout(timer);
 
-      if (hasChanges) {
-        await addAll().catch((e) => {
-          throw e;
-        });
+  if (callback) {
+    callback();
+  }
 
-        const timestamp = format(new Date(), dateFormat);
-        await commit(`Commit (${timestamp})`).catch((e) => {
-          throw e;
-        });
+  process.exit(1);
+}
 
-        await push().catch((e) => {
-          throw e;
-        });
+async function handleCommitAndPush(
+  dateFormat: string,
+  onComplete?: (...args: any[]) => void,
+) {
+  try {
+    const hasChanges = await hasNewOrChangedFiles();
 
-        log.info(`Commited and pushed ${timestamp}`);
-      } else {
-        log.info('No changes found');
-      }
+    if (hasChanges) {
+      await addAll().catch((e) => {
+        throw e;
+      });
 
-      timer = watch(interval, dateFormat);
-    } catch (e) {
-      clearTimeout(timer);
-      log.error(e);
-      process.exit(1);
+      const timestamp = format(new Date(), dateFormat);
+      await commit(`Commit (${timestamp})`).catch((e) => {
+        throw e;
+      });
+
+      await push().catch((e) => {
+        throw e;
+      });
+
+      log.info(`Commited and pushed ${timestamp}`);
+    } else {
+      log.info('No changes found');
     }
+
+    if (onComplete) {
+      onComplete();
+    }
+  } catch (e) {
+    handleExit(() => log.error(e));
+  }
+}
+
+export default function watch(interval: number, dateFormat: string) {
+  process.on('SIGINT', () => handleCommitAndPush(dateFormat, handleExit));
+
+  timer = setTimeout(function run() {
+    handleCommitAndPush(dateFormat, () => {
+      clearTimeout(timer);
+      timer = setTimeout(run, interval);
+    });
   }, interval);
 }
